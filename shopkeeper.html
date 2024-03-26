@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopkeeper Page</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+        /* Your CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            background-image: url(Background2.png);
+            margin: 0;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .add-product {
+            margin-bottom: 20px;
+        }
+        .add-product input[type="text"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        .add-product button {
+            padding: 8px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .add-product button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Shopkeeper Page</h1>
+    <div class="top">
+        <div class="logo"></div>
+        <div class="nav">
+            <a href="index.html">Home</a>
+            <a href="#">About</a>
+            <a href="login.html">Login</a>
+            <a href="signup.html">Signup</a>
+            
+        </div>
+      
+    </div>
+    <div class="add-product">
+        <input type="text" id="searchInput" placeholder="Search Product" onkeyup="searchProduct()">
+        <input type="text" id="productName" placeholder="Enter Product Name">
+        <input type="text" id="productCost" placeholder="Enter Product Cost">
+        <input type="text" id="productQuantity" placeholder="Enter Product Quantity">
+        <button onclick="addProduct()">Add Product</button>
+    </div>
+    <table id="productTable">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Cost</th>
+                <th>Quantity</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="productList">
+            <!-- Product rows will be dynamically added here -->
+        </tbody>
+    </table>
+
+    <script>
+    var products = []; // Array to store products
+
+    // Function to add product to the table
+    function addProduct() {
+        var productName = document.getElementById("productName").value;
+        var productCost = document.getElementById("productCost").value;
+        var productQuantity = document.getElementById("productQuantity").value;
+        var productList = document.getElementById("productList");
+
+        // Create new row
+        var newRow = document.createElement("tr");
+        newRow.innerHTML = `
+            <td>${productName}</td>
+            <td>${productCost}</td>
+            <td>${productQuantity}</td>
+            <td><button onclick="editProduct(${products.length})">Edit</button>
+                <button onclick="deleteProduct(${products.length})">Delete</button></td>
+        `;
+
+        // Append row to the table
+        productList.appendChild(newRow);
+
+        // Add product to array
+        products.push({
+            name: productName,
+            cost: productCost,
+            quantity: productQuantity
+        });
+
+        // Clear input fields
+        document.getElementById("productName").value = "";
+        document.getElementById("productCost").value = "";
+        document.getElementById("productQuantity").value = "";
+    }
+
+    // Function to edit product details
+    function editProduct(index) {
+        var productName = prompt("Enter new product name:", products[index].name);
+        var productCost = prompt("Enter new product cost:", products[index].cost);
+        var productQuantity = prompt("Enter new product quantity:", products[index].quantity);
+
+        // Update product details in the array
+        products[index] = {
+            name: productName,
+            cost: productCost,
+            quantity: productQuantity
+        };
+
+        // Update corresponding row in the table
+        var rows = document.getElementById("productList").getElementsByTagName("tr");
+        rows[index + 1].cells[0].textContent = productName;
+        rows[index + 1].cells[1].textContent = productCost;
+        rows[index + 1].cells[2].textContent = productQuantity;
+    }
+
+    // Function to delete product
+    function deleteProduct(index) {
+        // Remove product from array
+        products.splice(index, 1);
+
+        // Remove corresponding row from table
+        var row = document.getElementById("productList").getElementsByTagName("tr")[index + 1];
+        row.parentNode.removeChild(row);
+    }
+
+    // Function to search for a product
+    function searchProduct() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("searchInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("productTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0]; // Search in first column (Product Name)
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+    </script>
+</body>
+</html>

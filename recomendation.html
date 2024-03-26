@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommendations</title>
+    <!-- Include necessary stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Additional CSS for recommendations page */
+         /* Your CSS styles here */
+         .body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            background-image: url(Background2.png);
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .product-card {
+            flex: 0 0 calc(33.33% - 20px);
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        .product-card h3 {
+            margin-top: 0;
+        }
+
+        .product-card p {
+            margin-bottom: 10px;
+        }
+
+        .rating {
+            color: gold;
+        }
+    </style>
+</head>
+<body style="background-image: url(Background2.png);">
+    <div class="top">
+        <div class="logo"></div>
+        <div class="nav">
+            <a href="index.html">Home</a>
+            <a href="#">About</a>
+            <a href="login.html">Login</a>
+            <a href="signup.html">Signup</a>
+            
+        </div>
+      
+    </div>
+    <div class="container">
+        <h1>Similar Products</h1>
+        <div class="product-container" id="recommendationResults">
+            <!-- Recommendations will be populated here dynamically -->
+        </div>
+    </div>
+
+    <script>
+        // Dummy data for demonstration (similar products with descriptions and ratings)
+        var similarProducts = [
+            { 
+                name: "Product A", 
+                description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tempus vestibulum nisl vel hendrerit.", 
+                cost: 10, 
+                quantity: 20, 
+                rating: 4.5 
+            },
+            { 
+                name: "Product B", 
+                description: "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.", 
+                cost: 15, 
+                quantity: 30, 
+                rating: 3.8 
+            },
+            { 
+                name: "Product C", 
+                description: "Fusce auctor velit ut sem mattis, sit amet convallis lectus blandit.", 
+                cost: 20, 
+                quantity: 25, 
+                rating: 4.2 
+            }
+            // Add more similar products as needed
+        ];
+
+        // Function to display similar products
+        function displaySimilarProducts() {
+            var recommendationResults = document.getElementById("recommendationResults");
+
+            similarProducts.forEach(function(product) {
+                var productCard = document.createElement("div");
+                productCard.classList.add("product-card");
+
+                var productName = document.createElement("h3");
+                productName.textContent = product.name;
+                productCard.appendChild(productName);
+
+                var productDescription = document.createElement("p");
+                productDescription.textContent = product.description;
+                productCard.appendChild(productDescription);
+
+                var productDetails = document.createElement("p");
+                productDetails.textContent = "Cost: $" + product.cost + " | Quantity: " + product.quantity;
+                productCard.appendChild(productDetails);
+
+                var productRating = document.createElement("p");
+                productRating.classList.add("rating");
+                productRating.textContent = "Rating: " + product.rating.toFixed(1);
+                productCard.appendChild(productRating);
+
+                recommendationResults.appendChild(productCard);
+            });
+        }
+
+        // Call the function to display similar products when the page loads
+        displaySimilarProducts();
+    </script>
+</body>
+</html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop Search</title>
+    <link rel="stylesheet" href="styles.css">
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+    <style>
+        /* Your CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            background-image: url(Background2.png);
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .search-bar {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .search-bar select, .search-bar input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            flex: 1;
+        }
+        .search-bar select {
+            margin-right: 10px;
+        }
+        .search-bar button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .search-bar button:hover {
+            background-color: #0056b3;
+        }
+        .shop-box {
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        .shop-name {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .product-card {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+        }
+        .product-card h3 {
+            margin-top: 0;
+        }
+        .product-card p {
+            margin-bottom: 5px;
+        }
+        .recommendation-button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .recommendation-button:hover {
+            background-color: #218838;
+        }
+        .home-link {
+            color: orange;
+            cursor: pointer;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="top">
+        <div class="logo"></div>
+        <div class="nav">
+            <a href="index.html">Home</a>
+            <a href="#">About</a>
+            <a href="login.html">Login</a>
+            <a href="signup.html">Signup</a>
+            
+        </div>
+      
+    </div>
+
+    <div class="container">
+        <div class="search-bar">
+            <select id="location">
+                <option value="">Select Location</option>
+                <option value="kommadi">kommadi</option>
+                <option value="kommadi">kommadi</option>
+                <option value="gandhi nagar">gandhi nagar</option>
+                <!-- Add more locations as needed -->
+            </select>
+            <input type="text" id="productName" placeholder="Enter product name...">
+            <button onclick="search()">Search</button>
+        </div>
+        <div id="searchResults"></div>
+        <button class="recommendation-button" onclick="showRecommendations()">Recommendations</button>
+        <div id="recommendationResults" style="display: none;"></div>
+    </div>
+
+    <script>
+        // Dummy data for demonstration
+        var shops = [
+            {
+                name: "Shop 2",
+                location: "kommadi",
+                products: [
+                    { name: "soap", cost: 20, quantity: 20 },
+                    { name: "medimix", cost: 25, quantity: 40 }
+                ]
+            },
+            {
+                name: "shop1",
+                location: "kommadi",
+                products: [
+                    { name: "soap", cost: 10, quantity: 50 },
+                    { name: "yoghurt", cost: 15, quantity: 30 }
+                ]
+            },
+            {
+                name: "shop1",
+                location: "kommadi",
+                products: [
+                    { name: "soap", cost: 10, quantity: 50 },
+                    { name: "yoghurt", cost: 15, quantity: 30 }
+                ]
+            },
+            {
+                name: "shop1",
+                location: "kommadi",
+                products: [
+                    { name: "soap", cost: 10, quantity: 50 },
+                    { name: "yoghurt", cost: 15, quantity: 30 }
+                ]
+            },
+            {
+                name: "shop1",
+                location: "kommadi",
+                products: [
+                    { name: "soap", cost: 10, quantity: 50 },
+                    { name: "yoghurt", cost: 15, quantity: 30 }
+                ]
+            },
+            {
+                name: "shop1",
+                location: "kommadi",
+                products: [
+                    { name: "soap", cost: 10, quantity: 50 },
+                    { name: "yoghurt", cost: 15, quantity: 30 }
+                ]
+            },
+            {
+                name: "shop1",
+                location: "kommadi",
+                products: [
+                    { name: "soap", cost: 10, quantity: 50 },
+                    { name: "yoghurt", cost: 15, quantity: 30 }
+                ]
+            },
+            {
+                name: "Shop 3",
+                location: "gandhi nagar",
+                products: [
+                    { name: "soap", cost: 30, quantity: 25 },
+                    { name: "Product 6", cost: 35, quantity: 35 }
+                ]
+            }
+            // Add more shops as needed
+        ];
+        var similarproducts = [
+            {
+                products: [
+                    { name: "soap", cost: 20, quantity: 20 },
+                    { name: "medimix", cost: 25, quantity: 40 }
+                ]
+            },
+        ]
+
+        // Function to search for shops based on location and product name
+        // Function to search for shops based on location and product name
+// Function to search for shops based on location and product name
+function search() {
+    var location = document.getElementById("location").value;
+    var productName = document.getElementById("productName").value;
+    var searchResults = document.getElementById("searchResults");
+    searchResults.innerHTML = ""; // Clear previous results
+
+    var foundResults = false; // Flag to track if any results were found
+
+    shops.forEach(function(shop) {
+        if ((location === "" || shop.location === location)) {
+            var productsInShop = shop.products.filter(function(product) {
+                return productName === "" || product.name === productName;
+            });
+
+            if (productsInShop.length > 0) {
+                var shopBox = document.createElement("div");
+                shopBox.classList.add("shop-box");
+
+                var shopName = document.createElement("div");
+                shopName.classList.add("shop-name");
+                shopName.textContent = shop.name + " (" + shop.location + ")";
+                shopBox.appendChild(shopName);
+
+                var table = document.createElement("table");
+                var headerRow = table.insertRow();
+                var th1 = document.createElement("th");
+                th1.textContent = "Product";
+                headerRow.appendChild(th1);
+                var th2 = document.createElement("th");
+                th2.textContent = "Cost";
+                headerRow.appendChild(th2);
+                var th3 = document.createElement("th");
+                th3.textContent = "Quantity";
+                headerRow.appendChild(th3);
+
+                productsInShop.forEach(function(product) {
+                    var row = table.insertRow();
+                    var cell1 = row.insertCell();
+                    cell1.textContent = product.name;
+                    var cell2 = row.insertCell();
+                    cell2.textContent = "$" + product.cost;
+                    var cell3 = row.insertCell();
+                    cell3.textContent = product.quantity;
+                });
+
+                shopBox.appendChild(table);
+                searchResults.appendChild(shopBox);
+                foundResults = true; // Set flag to true if any results were found
+            }
+        }
+    });
+
+    // Display message if no results were found
+    if (!foundResults) {
+        var noResultsMessage = document.createElement("p");
+        noResultsMessage.textContent = "The searched product was not found. We will notify the shop owner.";
+        searchResults.appendChild(noResultsMessage);
+    }
+}
+function showRecommendations() {
+            window.location.href = "recomendation.html";
+        }
+
+
+    </script>
+</body>
+</html>
